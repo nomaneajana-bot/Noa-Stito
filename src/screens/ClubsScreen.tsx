@@ -44,451 +44,487 @@ export const ClubsScreen: React.FC<ClubsScreenProps> = ({
     <div className="flex flex-col w-full pb-28 md:pb-16 pt-16 md:pt-20 px-4 md:px-8 max-w-6xl mx-auto animate-in fade-in duration-200">
       {/* Toast Alert */}
       {toastMessage && (
-        <div className="fixed top-16 left-1/2 -translate-x-1/2 z-50 bg-on-surface text-surface px-4 py-2 rounded-full text-xs font-semibold shadow-xl border border-surface-container-high/20 animate-in fade-in duration-150">
+        <div className="fixed top-16 left-1/2 -translate-x-1/2 z-50 bg-ink text-white px-4 py-2 rounded-full text-xs font-semibold shadow-xl border border-sand-divider/40 animate-in fade-in duration-150">
           {toastMessage}
         </div>
       )}
 
-      {/* Club Panoramic Header Card */}
-      <div className="relative w-full rounded-3xl overflow-hidden bg-surface-container-lowest shadow-xs border border-surface-container-high/50 flex flex-col mb-6">
+      {/* Club Header: Google Stitch Editorial Card */}
+      <section className="flex flex-col bg-sand-card rounded-2xl overflow-hidden border hairline-border shadow-[0_2px_8px_rgba(17,19,17,0.02)] mb-6">
+        {/* Visual Cover */}
         <div
-          className="relative w-full h-44 sm:h-56 md:h-64 bg-cover bg-center"
+          className="relative w-full h-52 sm:h-64 bg-cover bg-center"
           style={{ backgroundImage: `url('${club.coverImage || IMAGES.clubCoverAnfa}')` }}
         >
-          <div className="absolute inset-0 bg-gradient-to-t from-surface-container-lowest via-transparent to-black/30"></div>
+          <div className="absolute inset-0 bg-gradient-to-t from-brand/90 via-brand/30 to-black/30"></div>
 
-          {/* Badges */}
-          <div className="absolute top-4 left-4 bg-surface-container-lowest/90 backdrop-blur-md px-3 py-1 rounded-full flex items-center gap-1.5 shadow-sm">
-            <span className="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
-            <span className="font-label-sm text-xs uppercase tracking-wider text-primary font-bold">
-              Actif aujourd'hui
-            </span>
+          {/* Badges top bar */}
+          <div className="absolute top-3.5 inset-x-3.5 flex items-center justify-between">
+            <div className="bg-black/40 backdrop-blur-md px-2.5 py-1 rounded-full border border-white/15 flex items-center gap-1.5 shadow-xs">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+              <span className="font-display text-[10px] tracking-[0.14em] uppercase text-white font-semibold">
+                Actif aujourd'hui
+              </span>
+            </div>
+            <div className="bg-black/40 backdrop-blur-md px-2.5 py-1 rounded-full border border-white/15 flex items-center gap-1 text-white/90 shadow-xs">
+              <span className="material-symbols-outlined text-[13px]">lock_open</span>
+              <span className="font-display text-[10px] tracking-wider uppercase font-semibold">Public</span>
+            </div>
           </div>
 
-          <div className="absolute top-4 right-4 bg-surface-container-lowest/90 backdrop-blur-md px-3 py-1 rounded-full flex items-center gap-1 shadow-sm">
-            <span className="material-symbols-outlined text-[15px] text-on-surface-variant">lock_open</span>
-            <span className="font-label-sm text-xs text-on-surface-variant font-medium">Public</span>
-          </div>
-        </div>
-
-        {/* Club Identity Details */}
-        <div className="px-5 sm:px-6 pt-4 pb-5 flex flex-col space-y-3">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-1.5 text-on-surface-variant mb-1">
-                <span className="material-symbols-outlined text-[18px] text-primary">location_on</span>
-                <span className="font-label-md text-sm">{club.city} · Club public ouvert</span>
+          {/* Bottom title inside cover */}
+          <div className="absolute bottom-3.5 inset-x-4 flex items-end justify-between">
+            <div>
+              <div className="flex items-center gap-1 text-white/80 text-[11px] font-display uppercase tracking-wider mb-0.5">
+                <span className="material-symbols-outlined text-[13px] text-emerald-300">location_on</span>
+                <span>{club.city} · Club public ouvert</span>
               </div>
-              <h1 className="font-headline-lg text-2xl sm:text-3xl font-bold text-on-surface tracking-tight truncate">
+              <h1 className="font-display text-[26px] sm:text-[32px] leading-tight font-bold text-white tracking-[-0.035em]">
                 {club.name}
               </h1>
             </div>
-
-            <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-full bg-secondary-fixed flex items-center justify-center shrink-0 shadow-sm">
-                <span className="material-symbols-outlined text-on-secondary-fixed text-[26px]">hiking</span>
-              </div>
-              <div className="bg-surface-container-low rounded-xl p-2.5 flex items-center gap-2 border border-surface-container-high/40">
-                <div className="w-6 h-6 rounded-full bg-primary flex items-center justify-center text-on-primary">
-                  <span className="material-symbols-outlined text-[14px]">
-                    {isAdminView ? 'shield_person' : 'person'}
-                  </span>
-                </div>
-                <div>
-                  <span className="font-label-sm text-[10px] uppercase tracking-wide text-primary block font-bold">
-                    Statut
-                  </span>
-                  <span className="font-body-sm text-xs font-bold text-on-surface">
-                    {isAdminView ? 'Membre Administrateur' : 'Membre Actif'}
-                  </span>
-                </div>
-                <button
-                  onClick={() => setIsAdminView(!isAdminView)}
-                  className="ml-2 text-xs font-semibold text-primary underline hover:text-tertiary cursor-pointer"
-                >
-                  {isAdminView ? 'Vue ordinaire' : 'Vue admin'}
-                </button>
-              </div>
+            <div className="w-11 h-11 rounded-full bg-white/15 backdrop-blur-md border border-white/20 flex items-center justify-center text-white flex-shrink-0 shadow-sm">
+              <span className="material-symbols-outlined text-[22px]">hiking</span>
             </div>
           </div>
+        </div>
 
-          <p className="font-body-md text-sm sm:text-base text-on-surface-variant leading-relaxed max-w-4xl">
+        {/* Club Body & Description */}
+        <div className="p-5 flex flex-col space-y-4">
+          <p className="font-sans text-[14px] sm:text-[15px] leading-relaxed text-ink-muted max-w-4xl">
             {club.description}
           </p>
+
+          {/* Member Status Badge */}
+          <div className="bg-[#FAF9F6] rounded-xl p-3.5 border hairline-border flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 rounded-lg bg-brand text-white flex items-center justify-center flex-shrink-0">
+                <span className="material-symbols-outlined text-[16px]">
+                  {isAdminView ? 'shield_person' : 'person'}
+                </span>
+              </div>
+              <div>
+                <span className="font-display text-[10px] tracking-[0.14em] uppercase font-bold text-brand block">
+                  Ton statut
+                </span>
+                <span className="font-sans text-[13px] font-semibold text-ink block">
+                  {isAdminView ? 'Tu es membre administrateur' : 'Tu es membre ordinaire'}
+                </span>
+              </div>
+            </div>
+            <button
+              onClick={() => setIsAdminView(!isAdminView)}
+              className="text-xs font-semibold text-brand underline hover:text-brand-dark cursor-pointer font-sans"
+            >
+              {isAdminView ? 'Vue ordinaire' : 'Vue admin'}
+            </button>
+          </div>
         </div>
-      </div>
+      </section>
 
       {/* Responsive 2-Column Split Layout on Desktop */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-        {/* LEFT COLUMN: Outings & Affinity Groups (7 cols) */}
+        {/* LEFT COLUMN: Prochaines Sorties & Groupes d'affinités (7 cols) */}
         <div className="lg:col-span-7 flex flex-col space-y-6">
-          {/* Section: Prochaines Sorties */}
+          {/* Section: Prochaines sorties */}
           <div className="flex flex-col space-y-3">
-            <div className="flex items-center justify-between">
+            <div className="flex items-baseline justify-between px-1">
               <div className="flex items-center gap-2">
-                <span className="material-symbols-outlined text-primary text-[22px]">event_upcoming</span>
-                <h3 className="font-headline-md font-bold text-on-surface">Prochaines sorties</h3>
+                <span className="material-symbols-outlined text-brand text-[18px]">event_upcoming</span>
+                <h3 className="font-display text-[18px] font-bold text-ink tracking-tight">
+                  Prochaines sorties
+                </h3>
               </div>
-              <span className="font-label-md text-xs text-primary font-bold">2 prévues</span>
+              <span className="font-display text-[12px] font-semibold text-brand">2 prévues</span>
             </div>
 
-            {/* Outing Card 1 */}
-            <div
-              onClick={() => onNavigate('outing-detail')}
-              className="w-full bg-surface-container-lowest rounded-2xl p-4 sm:p-5 shadow-xs hover:shadow-md space-y-3.5 active:scale-[0.99] transition-all cursor-pointer border border-surface-container-high/50 group"
-            >
-              <div className="flex items-start justify-between gap-2">
-                <div>
-                  <div className="flex items-center gap-2 mb-1">
-                    <span className="px-2.5 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-sm text-xs font-bold uppercase">
-                      Public
-                    </span>
-                    <span className="font-label-sm text-xs text-outline">Sam. 1 juin · 18:30</span>
+            <div className="space-y-3">
+              {/* Outing 1 */}
+              <article
+                onClick={() => onNavigate('outing-detail')}
+                className="bg-sand-card rounded-2xl p-4 sm:p-5 border hairline-border shadow-[0_2px_8px_rgba(17,19,17,0.02)] space-y-3 cursor-pointer active:scale-[0.99] transition-all group"
+              >
+                <div className="flex items-start justify-between gap-3 pb-2 border-b hairline-border">
+                  <div>
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="px-2 py-0.5 rounded bg-sand-muted text-ink text-[10px] font-display tracking-wider uppercase font-bold">
+                        Public
+                      </span>
+                      <span className="font-display text-[12px] text-ink-muted font-medium">
+                        Sam. 1 juin · 18:30
+                      </span>
+                    </div>
+                    <h4 className="font-display text-[17px] font-bold text-ink tracking-tight group-hover:text-brand transition-colors">
+                      Marche & conversation
+                    </h4>
                   </div>
-                  <h4 className="font-headline-md text-lg font-bold text-on-surface group-hover:text-primary transition-colors">
-                    Marche & conversation
-                  </h4>
+                  <span className="material-symbols-outlined text-ink-subtle text-[20px] mt-0.5 group-hover:translate-x-0.5 transition-transform">
+                    arrow_forward
+                  </span>
                 </div>
-                <span className="material-symbols-outlined text-outline-variant text-[24px] group-hover:translate-x-1 transition-transform">
-                  chevron_right
-                </span>
-              </div>
 
-              <div className="grid grid-cols-2 gap-2.5 bg-surface-container-low p-2.5 rounded-xl">
-                <div className="flex items-center gap-2.5">
-                  <span className="material-symbols-outlined text-primary text-[20px]">park</span>
-                  <div className="min-w-0">
-                    <span className="font-label-sm text-[10px] text-outline uppercase block">Lieu</span>
-                    <span className="font-body-sm text-xs font-bold text-on-surface truncate block">
-                      Anfa Park
+                {/* Outing meta grid */}
+                <div className="grid grid-cols-2 gap-2 text-[12px]">
+                  <div className="flex items-center gap-2 bg-[#FAF9F6] p-2.5 rounded-xl border hairline-border">
+                    <span className="material-symbols-outlined text-brand text-[16px]">park</span>
+                    <div className="min-w-0">
+                      <span className="font-display text-[9px] text-ink-muted uppercase tracking-wider block">
+                        Lieu
+                      </span>
+                      <span className="font-sans text-[13px] font-semibold text-ink truncate block">
+                        Anfa Park
+                      </span>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2 bg-[#FAF9F6] p-2.5 rounded-xl border hairline-border">
+                    <span className="material-symbols-outlined text-ink-muted text-[16px]">
+                      group
                     </span>
+                    <div className="min-w-0">
+                      <span className="font-display text-[9px] text-ink-muted uppercase tracking-wider block">
+                        Inscrits
+                      </span>
+                      <span className="font-sans text-[13px] font-semibold text-ink block">
+                        14 participants
+                      </span>
+                    </div>
                   </div>
                 </div>
-                <div className="flex items-center gap-2.5">
-                  <span className="material-symbols-outlined text-secondary text-[20px]">group</span>
-                  <div className="min-w-0">
-                    <span className="font-label-sm text-[10px] text-outline uppercase block">Inscrits</span>
-                    <span className="font-body-sm text-xs font-bold text-on-surface block">
-                      14 participants
-                    </span>
-                  </div>
-                </div>
-              </div>
 
-              <div className="flex items-center justify-between pt-1">
-                <div className="flex -space-x-2 overflow-hidden">
-                  <div className="w-7 h-7 rounded-full bg-primary-fixed flex items-center justify-center font-label-sm text-xs font-bold text-on-primary-fixed ring-2 ring-surface-container-lowest">
-                    MB
+                {/* Outing footer */}
+                <div className="flex items-center justify-between pt-0.5">
+                  <div className="flex -space-x-1.5 overflow-hidden">
+                    <div className="w-6 h-6 rounded-full bg-brand text-white flex items-center justify-center font-display text-[10px] font-bold ring-2 ring-white">
+                      MB
+                    </div>
+                    <div className="w-6 h-6 rounded-full bg-sand-muted text-ink flex items-center justify-center font-display text-[10px] font-bold ring-2 ring-white">
+                      YS
+                    </div>
+                    <div className="w-6 h-6 rounded-full bg-sand-muted text-ink-muted flex items-center justify-center font-display text-[10px] font-medium ring-2 ring-white">
+                      +12
+                    </div>
                   </div>
-                  <div className="w-7 h-7 rounded-full bg-tertiary-fixed flex items-center justify-center font-label-sm text-xs font-bold text-on-tertiary-fixed ring-2 ring-surface-container-lowest">
-                    YS
-                  </div>
-                  <div className="w-7 h-7 rounded-full bg-secondary-fixed flex items-center justify-center font-label-sm text-xs font-bold text-on-secondary-fixed ring-2 ring-surface-container-lowest">
-                    +12
-                  </div>
+                  <span className="font-display text-[11px] font-bold text-brand flex items-center gap-1">
+                    Appuie pour voir le parcours
+                    <span className="material-symbols-outlined text-[13px]">chevron_right</span>
+                  </span>
                 </div>
-                <span className="font-label-sm text-xs text-primary font-bold">
-                  Appuie pour voir le parcours
-                </span>
-              </div>
-            </div>
+              </article>
 
-            {/* Outing Card 2 */}
-            <div
-              onClick={() => onNavigate('outing-detail')}
-              className="w-full bg-surface-container-lowest rounded-2xl p-4 sm:p-5 shadow-xs hover:shadow-md space-y-3.5 active:scale-[0.99] transition-all cursor-pointer border border-surface-container-high/50 group"
-            >
-              <div className="flex items-start justify-between gap-2">
-                <div>
-                  <div className="flex items-center gap-2 mb-1">
-                    <span className="px-2.5 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant font-label-sm text-xs font-bold uppercase">
-                      Réservée Club
-                    </span>
-                    <span className="font-label-sm text-xs text-outline">Dim. 9 juin · 10:00</span>
+              {/* Outing 2 */}
+              <article
+                onClick={() => onNavigate('outing-detail')}
+                className="bg-sand-card rounded-2xl p-4 sm:p-5 border hairline-border shadow-[0_2px_8px_rgba(17,19,17,0.02)] space-y-3 cursor-pointer active:scale-[0.99] transition-all group"
+              >
+                <div className="flex items-start justify-between gap-3 pb-2 border-b hairline-border">
+                  <div>
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="px-2 py-0.5 rounded bg-brand/10 text-brand text-[10px] font-display tracking-wider uppercase font-bold">
+                        Club privé
+                      </span>
+                      <span className="font-display text-[12px] text-ink-muted font-medium">
+                        Dim. 2 juin · 07:15
+                      </span>
+                    </div>
+                    <h4 className="font-display text-[17px] font-bold text-ink tracking-tight group-hover:text-brand transition-colors">
+                      Footing matinal & Sunrise Corniche
+                    </h4>
                   </div>
-                  <h4 className="font-headline-md text-lg font-bold text-on-surface group-hover:text-primary transition-colors">
-                    Balade historique Habous
-                  </h4>
+                  <span className="material-symbols-outlined text-ink-subtle text-[20px] mt-0.5 group-hover:translate-x-0.5 transition-transform">
+                    arrow_forward
+                  </span>
                 </div>
-                <span className="material-symbols-outlined text-outline-variant text-[24px] group-hover:translate-x-1 transition-transform">
-                  chevron_right
-                </span>
-              </div>
 
-              <div className="grid grid-cols-2 gap-2.5 bg-surface-container-low p-2.5 rounded-xl">
-                <div className="flex items-center gap-2.5">
-                  <span className="material-symbols-outlined text-primary text-[20px]">account_balance</span>
-                  <div className="min-w-0">
-                    <span className="font-label-sm text-[10px] text-outline uppercase block">Lieu</span>
-                    <span className="font-body-sm text-xs font-bold text-on-surface truncate block">
-                      Quartier Habous
+                <div className="grid grid-cols-2 gap-2 text-[12px]">
+                  <div className="flex items-center gap-2 bg-[#FAF9F6] p-2.5 rounded-xl border hairline-border">
+                    <span className="material-symbols-outlined text-brand text-[16px]">waves</span>
+                    <div className="min-w-0">
+                      <span className="font-display text-[9px] text-ink-muted uppercase tracking-wider block">
+                        Lieu
+                      </span>
+                      <span className="font-sans text-[13px] font-semibold text-ink truncate block">
+                        Corniche Aïn Diab
+                      </span>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2 bg-[#FAF9F6] p-2.5 rounded-xl border hairline-border">
+                    <span className="material-symbols-outlined text-ink-muted text-[16px]">
+                      speed
                     </span>
+                    <div className="min-w-0">
+                      <span className="font-display text-[9px] text-ink-muted uppercase tracking-wider block">
+                        Allure
+                      </span>
+                      <span className="font-sans text-[13px] font-semibold text-ink block">
+                        5:45/km (Doux)
+                      </span>
+                    </div>
                   </div>
                 </div>
-                <div className="flex items-center gap-2.5">
-                  <span className="material-symbols-outlined text-secondary text-[20px]">group</span>
-                  <div className="min-w-0">
-                    <span className="font-label-sm text-[10px] text-outline uppercase block">Inscrits</span>
-                    <span className="font-body-sm text-xs font-bold text-on-surface block">
-                      8 participants
-                    </span>
-                  </div>
-                </div>
-              </div>
 
-              <div className="flex items-center justify-between pt-1">
-                <div className="flex -space-x-2 overflow-hidden">
-                  <div className="w-7 h-7 rounded-full bg-tertiary-fixed-dim flex items-center justify-center font-label-sm text-xs font-bold text-on-tertiary-fixed-variant ring-2 ring-surface-container-lowest">
-                    KT
+                <div className="flex items-center justify-between pt-0.5">
+                  <div className="flex -space-x-1.5 overflow-hidden">
+                    <div className="w-6 h-6 rounded-full bg-brand text-white flex items-center justify-center font-display text-[10px] font-bold ring-2 ring-white">
+                      MB
+                    </div>
+                    <div className="w-6 h-6 rounded-full bg-sand-muted text-ink flex items-center justify-center font-display text-[10px] font-bold ring-2 ring-white">
+                      KT
+                    </div>
                   </div>
-                  <div className="w-7 h-7 rounded-full bg-primary-fixed-dim flex items-center justify-center font-label-sm text-xs font-bold text-on-primary-fixed-variant ring-2 ring-surface-container-lowest">
-                    LM
-                  </div>
-                  <div className="w-7 h-7 rounded-full bg-surface-container-high flex items-center justify-center font-label-sm text-xs font-bold text-on-surface-variant ring-2 ring-surface-container-lowest">
-                    +6
-                  </div>
+                  <span className="font-display text-[11px] font-bold text-brand flex items-center gap-1">
+                    Voir les détails
+                    <span className="material-symbols-outlined text-[13px]">chevron_right</span>
+                  </span>
                 </div>
-                <span className="font-label-sm text-xs text-outline font-medium">
-                  Inscription ouverte
-                </span>
-              </div>
+              </article>
             </div>
           </div>
 
-          {/* Section: Groupes & Affinités */}
+          {/* Section: Groupes & affinités */}
           <div className="flex flex-col space-y-3">
-            <div className="flex items-center justify-between">
+            <div className="flex items-baseline justify-between px-1">
               <div className="flex items-center gap-2">
-                <span className="material-symbols-outlined text-primary text-[22px]">forum</span>
-                <h3 className="font-headline-md font-bold text-on-surface">Groupes & affinités</h3>
+                <span className="material-symbols-outlined text-brand text-[18px]">forum</span>
+                <h3 className="font-display text-[18px] font-bold text-ink tracking-tight">
+                  Groupes & affinités
+                </h3>
               </div>
-              <span className="font-label-sm text-xs text-outline uppercase font-semibold">
-                Optionnels
+              <span className="font-display text-[12px] font-semibold text-brand">
+                {affinityGroups.length} sous-groupes
               </span>
             </div>
 
-            <div className="space-y-2.5">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {affinityGroups.map((group) => (
                 <div
                   key={group.id}
-                  className="w-full bg-surface-container-lowest rounded-2xl p-4 flex items-center justify-between shadow-xs border border-surface-container-high/50"
+                  className="bg-sand-card rounded-2xl p-4 border hairline-border shadow-[0_2px_8px_rgba(17,19,17,0.02)] flex flex-col justify-between space-y-3"
                 >
-                  <div className="flex items-center gap-3">
-                    <div
-                      className={`w-11 h-11 rounded-full flex items-center justify-center shrink-0 ${group.bgColorClass}`}
-                    >
-                      <span className="material-symbols-outlined text-[22px]">{group.icon}</span>
-                    </div>
-                    <div>
-                      <h4 className="font-headline-md text-sm font-bold text-on-surface">
-                        {group.title}
-                      </h4>
-                      <span className="font-body-sm text-xs text-on-surface-variant">
-                        {group.description}
+                  <div className="space-y-1.5">
+                    <div className="flex items-center justify-between">
+                      <div className="w-8 h-8 rounded-lg bg-brand/10 text-brand flex items-center justify-center border border-brand/15">
+                        <span className="material-symbols-outlined text-[18px]">{group.icon}</span>
+                      </div>
+                      <span className="font-display text-[11px] text-ink-muted font-medium">
+                        {group.memberCount} marcheurs
                       </span>
                     </div>
+                    <h4 className="font-display text-[15px] font-bold text-ink tracking-tight">
+                      {group.title}
+                    </h4>
+                    <p className="font-sans text-[12px] text-ink-muted leading-relaxed">
+                      {group.description}
+                    </p>
                   </div>
 
                   <button
                     onClick={() => toggleGroupJoin(group.id)}
-                    className={`px-4 py-1.5 rounded-full font-label-md text-xs font-semibold transition-all cursor-pointer ${
+                    className={`w-full py-2 rounded-xl font-display text-[12px] font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
                       group.joined
-                        ? 'bg-secondary-container text-on-secondary-container font-bold'
-                        : 'bg-surface-container text-on-surface hover:bg-surface-container-high'
+                        ? 'bg-brand/10 text-brand border border-brand/20 hover:bg-brand/15'
+                        : 'bg-brand text-white hover:bg-brand-dark'
                     }`}
                   >
-                    {group.joined ? 'Rejoint' : 'Rejoindre'}
+                    <span className="material-symbols-outlined text-[16px]">
+                      {group.joined ? 'check' : 'add'}
+                    </span>
+                    <span>{group.joined ? 'Membre actif' : 'Rejoindre'}</span>
                   </button>
                 </div>
               ))}
             </div>
-
-            <div className="bg-surface-container-low rounded-xl p-3.5 flex items-start gap-2.5 border border-surface-container-high/40">
-              <span className="material-symbols-outlined text-primary text-[18px] mt-0.5 shrink-0">
-                info
-              </span>
-              <p className="font-body-sm text-xs text-on-surface-variant leading-relaxed">
-                Les groupes sont purement thématiques et optionnels. Rejoindre le club n'inscrit pas automatiquement aux sorties.
-              </p>
-            </div>
           </div>
         </div>
 
-        {/* RIGHT COLUMN: Admin Management, Roster & Perspective (5 cols) */}
+        {/* RIGHT COLUMN: Actions & Members (5 cols) */}
         <div className="lg:col-span-5 flex flex-col space-y-6">
-          {/* Admin Action Strip */}
+          {/* Admin Management Action Strip */}
           {isAdminView ? (
-            <div className="flex flex-col space-y-3 bg-surface-container-lowest p-5 rounded-3xl shadow-xs border border-surface-container-high/50">
-              <div className="flex items-center justify-between">
-                <span className="font-label-sm text-xs uppercase tracking-wider text-outline font-bold">
-                  Gestion du club
+            <section className="bg-sand-card p-4 rounded-2xl border hairline-border shadow-[0_2px_8px_rgba(17,19,17,0.02)] space-y-2.5">
+              <div className="flex items-center justify-between px-1">
+                <span className="material-symbols-outlined text-brand text-[18px]">
+                  admin_panel_settings
                 </span>
-                <span className="font-label-sm text-xs text-primary font-bold">
+                <span className="font-display text-[10px] tracking-[0.14em] uppercase text-brand font-bold">
                   Mode responsable
                 </span>
               </div>
 
+              {/* Primary Action */}
               <button
                 onClick={() => onNavigate('organise-outing')}
-                className="w-full h-12 bg-primary hover:bg-primary-container text-on-primary rounded-full font-label-lg text-sm font-bold flex items-center justify-center gap-2 shadow-sm transition-all cursor-pointer"
+                className="w-full h-11 bg-brand hover:bg-brand-dark text-white rounded-xl font-display text-xs uppercase tracking-[0.14em] font-bold flex items-center justify-center gap-2 active:scale-[0.99] transition-all shadow-xs cursor-pointer"
               >
-                <span className="material-symbols-outlined text-[20px]">add_circle</span>
-                Organiser une sortie
+                <span className="material-symbols-outlined text-[18px]">add_circle</span>
+                <span>Organiser une sortie</span>
               </button>
 
-              <div className="grid grid-cols-2 gap-2.5 pt-1">
+              {/* Secondary Action Row */}
+              <div className="grid grid-cols-2 gap-2 pt-0.5">
                 <button
                   onClick={() => onNavigate('invitations')}
-                  className="h-10 bg-surface-container hover:bg-surface-container-high text-on-surface rounded-full px-3 text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+                  className="h-9 bg-[#FAF9F6] hover:bg-sand-muted border hairline-border text-ink rounded-xl px-3 font-display text-[12px] font-semibold flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
                 >
-                  <span className="material-symbols-outlined text-[16px] text-primary">person_add</span>
-                  Inviter un membre
+                  <span className="material-symbols-outlined text-[15px] text-brand">person_add</span>
+                  <span>Inviter</span>
                 </button>
                 <button
                   onClick={() => onNavigate('invitations')}
-                  className="relative h-10 bg-secondary-fixed text-on-secondary-fixed-variant rounded-full px-3 text-xs font-bold flex items-center justify-center gap-1.5 hover:opacity-90 transition-opacity cursor-pointer"
+                  className="relative h-9 bg-[#FAF9F6] hover:bg-sand-muted border hairline-border text-ink rounded-xl px-3 font-display text-[12px] font-semibold flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
                 >
-                  <span className="material-symbols-outlined text-[16px]">how_to_reg</span>
+                  <span className="material-symbols-outlined text-[15px] text-brand">how_to_reg</span>
                   <span className="truncate">Demandes (2)</span>
-                  <span className="w-2 h-2 rounded-full bg-error ml-0.5"></span>
+                  <span className="w-1.5 h-1.5 rounded-full bg-brand ml-0.5"></span>
                 </button>
               </div>
-            </div>
+            </section>
           ) : (
-            <div className="bg-surface-container-lowest p-5 rounded-3xl shadow-xs border border-surface-container-high/50 space-y-3">
-              <span className="font-label-sm text-xs uppercase text-outline font-bold block">
+            <section className="bg-sand-card p-4 rounded-2xl border hairline-border shadow-[0_2px_8px_rgba(17,19,17,0.02)] space-y-2.5">
+              <span className="font-display text-[10px] tracking-[0.14em] uppercase text-ink-muted font-bold block">
                 Espace adhérent
               </span>
-              <p className="text-xs text-on-surface-variant leading-relaxed">
-                Tu es membre de ce club. Tu peux inviter des amis proches à postuler ou consulter les sorties privées.
+              <p className="font-sans text-xs text-ink-muted">
+                Tu es membre de ce club. Tu peux inviter des coéquipiers ou participer aux sorties réservées.
               </p>
               <button
                 onClick={() => onNavigate('invitations')}
-                className="w-full h-11 bg-secondary-container text-on-secondary-container font-label-md text-xs font-bold rounded-full flex items-center justify-center gap-2 cursor-pointer"
+                className="w-full h-10 rounded-xl bg-brand/10 text-brand font-display text-xs font-bold flex items-center justify-center gap-1.5 cursor-pointer"
               >
                 <span className="material-symbols-outlined text-[16px]">person_add</span>
-                Inviter un membre
+                <span>Inviter un proche</span>
               </button>
-            </div>
+            </section>
           )}
 
-          {/* Members Roster */}
-          <div className="bg-surface-container-lowest rounded-3xl p-5 shadow-xs border border-surface-container-high/50 space-y-4">
-            <div className="flex items-center justify-between">
+          {/* Member Roster: Space Grotesk + Manrope Editorial List */}
+          <section className="flex flex-col space-y-3">
+            <div className="flex items-baseline justify-between px-1">
               <div className="flex items-center gap-2">
-                <span className="material-symbols-outlined text-primary text-[22px]">group</span>
-                <h3 className="font-headline-md font-bold text-on-surface">Membres</h3>
+                <span className="material-symbols-outlined text-brand text-[18px]">group</span>
+                <h3 className="font-display text-[18px] font-bold text-ink tracking-tight">Membres</h3>
               </div>
-              <span className="font-label-md text-xs text-primary font-bold">
-                {club.memberCount} membres
-              </span>
+              <span className="font-display text-[12px] font-semibold text-brand">48 membres</span>
             </div>
 
-            <div className="space-y-3">
-              {club.members.map((member) => (
-                <div
-                  key={member.id}
-                  className="flex items-center justify-between py-1.5 border-b border-surface-container-high/30 last:border-b-0"
-                >
-                  <div className="flex items-center gap-3">
-                    <div
-                      className={`w-10 h-10 rounded-full flex items-center justify-center font-label-lg text-sm font-bold ${
-                        member.tag === 'Fondateur'
-                          ? 'bg-primary text-on-primary'
-                          : 'bg-surface-container text-on-surface'
-                      }`}
-                    >
-                      {member.initials}
-                    </div>
-                    <div>
-                      <div className="flex items-center gap-1.5">
-                        <span className="font-body-md text-sm font-bold text-on-surface">
-                          {member.name}
-                        </span>
-                        {member.tag && (
-                          <span className="px-2 py-0.5 rounded-full bg-secondary-fixed text-on-secondary-fixed font-label-sm text-[10px] font-bold uppercase">
-                            {member.tag}
-                          </span>
-                        )}
-                      </div>
-                      <span className="font-body-sm text-xs text-outline">
-                        {member.activeTimeStr} · {member.distanceStr}
+            <div className="bg-sand-card rounded-2xl border hairline-border p-4 shadow-[0_2px_8px_rgba(17,19,17,0.02)] space-y-3">
+              {/* Member 1: Founder */}
+              <div className="flex items-center justify-between py-1.5 border-b hairline-border pb-2.5">
+                <div className="flex items-center gap-3">
+                  <div className="w-9 h-9 rounded-full bg-brand text-white flex items-center justify-center font-display text-[12px] font-bold">
+                    MB
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-1.5">
+                      <span className="font-sans text-[14px] font-bold text-ink">
+                        Mehdi Benjelloun
+                      </span>
+                      <span className="px-1.5 py-0.2 rounded bg-sand-muted text-ink font-display text-[9px] font-bold tracking-wider uppercase">
+                        Fondateur
                       </span>
                     </div>
-                  </div>
-
-                  {member.tag === 'Fondateur' ? (
-                    <span className="material-symbols-outlined text-outline-variant text-[20px]">
-                      military_tech
+                    <span className="font-sans text-[12px] text-ink-muted block">
+                      Actif il y a 2h · 128 km avec le club
                     </span>
-                  ) : (
-                    <span className="font-label-sm text-xs text-outline">{member.role}</span>
-                  )}
+                  </div>
                 </div>
-              ))}
-            </div>
+                <span className="material-symbols-outlined text-brand text-[18px]">military_tech</span>
+              </div>
 
+              {/* Member 2 */}
+              <div className="flex items-center justify-between py-1">
+                <div className="flex items-center gap-3">
+                  <div className="w-9 h-9 rounded-full bg-sand-muted text-ink flex items-center justify-center font-display text-[12px] font-semibold border hairline-border">
+                    YS
+                  </div>
+                  <div>
+                    <span className="font-sans text-[14px] font-semibold text-ink block">
+                      Yasmine S.
+                    </span>
+                    <span className="font-sans text-[12px] text-ink-muted">Membre depuis mars · 42 km</span>
+                  </div>
+                </div>
+                <span className="font-display text-[10px] uppercase tracking-wider text-ink-muted font-semibold">
+                  Marcheuse
+                </span>
+              </div>
+
+              {/* Member 3 */}
+              <div className="flex items-center justify-between py-1">
+                <div className="flex items-center gap-3">
+                  <div className="w-9 h-9 rounded-full bg-sand-muted text-ink flex items-center justify-center font-display text-[12px] font-semibold border hairline-border">
+                    KT
+                  </div>
+                  <div>
+                    <span className="font-sans text-[14px] font-semibold text-ink block">
+                      Karim T.
+                    </span>
+                    <span className="font-sans text-[12px] text-ink-muted">Membre depuis avril · 19 km</span>
+                  </div>
+                </div>
+                <span className="font-display text-[10px] uppercase tracking-wider text-ink-muted font-semibold">
+                  Explorateur
+                </span>
+              </div>
+
+              {/* Member 4 */}
+              <div className="flex items-center justify-between py-1">
+                <div className="flex items-center gap-3">
+                  <div className="w-9 h-9 rounded-full bg-sand-muted text-ink flex items-center justify-center font-display text-[12px] font-semibold border hairline-border">
+                    LM
+                  </div>
+                  <div>
+                    <span className="font-sans text-[14px] font-semibold text-ink block">
+                      Leila M.
+                    </span>
+                    <span className="font-sans text-[12px] text-ink-muted">Membre depuis mai · 6 sorties</span>
+                  </div>
+                </div>
+                <span className="font-display text-[10px] uppercase tracking-wider text-ink-muted font-semibold">
+                  Marcheuse
+                </span>
+              </div>
+
+              {/* Expand Button */}
+              <button
+                onClick={() => setShowAllMembersModal(true)}
+                className="w-full py-2.5 mt-1 rounded-xl bg-[#FAF9F6] hover:bg-sand-muted text-ink border hairline-border font-display text-[12px] font-semibold text-center transition-colors cursor-pointer"
+              >
+                Voir tous les 48 membres
+              </button>
+            </div>
+          </section>
+
+          {/* Quick Create Club shortcut */}
+          <section className="bg-sand-card rounded-2xl p-4 border hairline-border shadow-[0_2px_8px_rgba(17,19,17,0.02)] flex items-center justify-between">
+            <div className="min-w-0 pr-3">
+              <span className="font-display text-[10px] uppercase tracking-[0.14em] text-ink-muted font-bold block">
+                Envie d'un nouveau groupe ?
+              </span>
+              <span className="font-sans text-xs text-ink-muted">
+                Crée un club pour ton quartier ou tes amis.
+              </span>
+            </div>
             <button
-              onClick={() => setShowAllMembersModal(true)}
-              className="w-full py-2.5 rounded-xl bg-surface-container hover:bg-surface-container-high text-on-surface font-label-md text-xs font-bold text-center transition-colors cursor-pointer"
+              onClick={() => onNavigate('create-club')}
+              className="px-3.5 py-1.5 rounded-lg bg-brand text-white font-display text-xs font-bold uppercase tracking-wider shrink-0 cursor-pointer hover:bg-brand-dark transition-colors"
             >
-              Voir tous les {club.memberCount} membres
+              Créer
             </button>
-          </div>
-
-          {/* Perspective Comparison Inset */}
-          <div className="bg-surface-container-high/60 rounded-3xl p-4 space-y-2.5 border border-surface-container-high">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <span className="material-symbols-outlined text-[18px] text-tertiary">visibility</span>
-                <span className="font-label-md text-xs font-bold text-on-surface uppercase tracking-wide">
-                  Aperçu : Vue membre ordinaire
-                </span>
-              </div>
-              <button
-                onClick={() => setIsAdminView(!isAdminView)}
-                className="text-xs text-primary font-bold hover:underline cursor-pointer"
-              >
-                {isAdminView ? 'Activer' : 'Rétablir admin'}
-              </button>
-            </div>
-
-            <div className="bg-surface-container-lowest p-3 rounded-xl flex items-center justify-between border border-surface-container-high/40">
-              <div className="flex items-center gap-2">
-                <span className="px-2 py-0.5 rounded-full bg-surface-container-highest text-on-surface font-label-sm text-xs font-semibold">
-                  Membre
-                </span>
-                <span className="font-body-sm text-xs text-on-surface-variant">
-                  Pas de droits de modération
-                </span>
-              </div>
-              <button
-                onClick={() => onNavigate('invitations')}
-                className="h-8 px-3 rounded-full bg-secondary-container text-on-secondary-container font-label-md text-xs font-bold flex items-center gap-1 shadow-2xs cursor-pointer"
-              >
-                <span className="material-symbols-outlined text-[14px]">person_add</span>
-                Inviter
-              </button>
-            </div>
-
-            <span className="font-label-sm text-[11px] text-outline block italic">
-              Les boutons de gestion et validation des membres sont masqués pour les non-administrateurs.
-            </span>
-          </div>
+          </section>
         </div>
       </div>
 
       {/* Full Members Modal */}
       {showAllMembersModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-4 animate-in fade-in duration-200">
-          <div className="bg-surface-container-lowest rounded-3xl p-6 max-w-md w-full max-h-[80vh] flex flex-col shadow-2xl space-y-4 border border-surface-container-high">
-            <div className="flex items-center justify-between pb-3 border-b border-surface-container-high">
-              <h3 className="font-headline-md font-bold text-on-surface">
+          <div className="bg-sand-card rounded-2xl p-6 max-w-md w-full max-h-[80vh] flex flex-col shadow-2xl space-y-4 border hairline-border">
+            <div className="flex items-center justify-between pb-3 border-b hairline-border">
+              <h3 className="font-display font-bold text-ink text-lg">
                 Membres du club ({club.memberCount})
               </h3>
               <button
                 onClick={() => setShowAllMembersModal(false)}
-                className="text-outline hover:text-on-surface w-8 h-8 rounded-full flex items-center justify-center"
+                className="text-ink-muted hover:text-ink w-8 h-8 rounded-full flex items-center justify-center cursor-pointer"
               >
                 <span className="material-symbols-outlined text-[20px]">close</span>
               </button>
@@ -502,23 +538,23 @@ export const ClubsScreen: React.FC<ClubsScreenProps> = ({
                   { id: 'm-8', name: 'Zineb Tazi', role: 'Marcheuse', initials: 'ZT', distanceStr: '14 km', activeTimeStr: 'Membre récent' },
                 ])
                 .map((m) => (
-                  <div key={m.id} className="flex items-center justify-between text-xs py-1">
+                  <div key={m.id} className="flex items-center justify-between text-xs py-1.5 border-b hairline-border last:border-0">
                     <div className="flex items-center gap-2.5">
-                      <div className="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center font-bold">
+                      <div className="w-8 h-8 rounded-full bg-sand-muted text-ink flex items-center justify-center font-display font-bold border hairline-border">
                         {m.initials}
                       </div>
                       <div>
-                        <span className="font-bold text-on-surface block">{m.name}</span>
-                        <span className="text-outline text-[11px]">{m.distanceStr}</span>
+                        <span className="font-bold text-ink block font-sans">{m.name}</span>
+                        <span className="text-ink-muted text-[11px] font-sans">{m.distanceStr}</span>
                       </div>
                     </div>
-                    <span className="text-outline text-[11px] font-medium">{m.role}</span>
+                    <span className="text-ink-muted text-[11px] font-medium font-sans">{m.role}</span>
                   </div>
                 ))}
             </div>
             <button
               onClick={() => setShowAllMembersModal(false)}
-              className="w-full h-11 rounded-full bg-primary hover:bg-primary-container text-on-primary font-label-md font-semibold cursor-pointer"
+              className="w-full h-11 rounded-xl bg-brand hover:bg-brand-dark text-white font-display text-xs font-semibold cursor-pointer"
             >
               Fermer
             </button>

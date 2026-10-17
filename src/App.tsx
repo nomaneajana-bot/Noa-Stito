@@ -19,6 +19,8 @@ import { OrganiseOutingScreen } from './screens/OrganiseOutingScreen';
 import { InvitationsScreen } from './screens/InvitationsScreen';
 import { CreateClubScreen } from './screens/CreateClubScreen';
 import { ProfileScreen } from './screens/ProfileScreen';
+import { SettingsScreen } from './screens/SettingsScreen';
+import { OnboardingScreen } from './screens/OnboardingScreen';
 
 export default function App() {
   const [currentScreen, setCurrentScreen] = useState<ScreenId>('accueil');
@@ -215,20 +217,38 @@ export default function App() {
             onOpenContact={() => setIsContactModalOpen(true)}
           />
         )}
+
+        {currentScreen === 'settings' && (
+          <SettingsScreen
+            onNavigate={handleNavigate}
+            onOpenContact={() => setIsContactModalOpen(true)}
+          />
+        )}
+
+        {currentScreen === 'onboarding' && (
+          <OnboardingScreen
+            onNavigate={handleNavigate}
+            onSelectOuting={(item) => {
+              setSelectedOuting(item);
+              handleNavigate('outing-detail');
+            }}
+          />
+        )}
       </main>
 
-      {/* Desktop Responsive Footer (Quiet & clean) */}
-      <footer className="hidden md:block bg-surface-container-low border-t border-surface-container-high/60 py-6 px-8 mt-12 text-xs text-on-surface-variant">
+      {/* Desktop Responsive Footer (Google Stitch Editorial Craft) */}
+      <footer className="hidden md:block bg-[#FAF9F6] border-t hairline-border py-6 px-8 mt-12 text-xs text-ink-muted font-sans">
         <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2">
-            <div className="w-6 h-6 rounded-full bg-primary flex items-center justify-center text-on-primary">
-              <span className="material-symbols-outlined text-[14px]">directions_run</span>
+            <div className="w-5 h-5 rounded-xs bg-primary flex items-center justify-center text-white">
+              <span className="material-symbols-outlined text-[13px] font-light">directions_run</span>
             </div>
-            <span className="font-headline-md font-bold text-on-surface">GRPD Maroc</span>
-            <span className="text-outline">· Plateforme communautaire de marche & course</span>
+            <span className="font-display font-bold text-on-surface text-[14px]">GRPD Maroc</span>
+            <span className="text-sand-divider">·</span>
+            <span className="text-ink-muted">Plateforme éditoriale de marche & course communautaire</span>
           </div>
 
-          <div className="flex items-center gap-6">
+          <div className="flex items-center gap-6 font-medium">
             <button
               onClick={() => handleNavigate('accueil')}
               className="hover:text-primary transition-colors cursor-pointer"
@@ -249,15 +269,15 @@ export default function App() {
             </button>
             <button
               onClick={() => setIsContactModalOpen(true)}
-              className="text-primary font-semibold hover:underline cursor-pointer flex items-center gap-1"
+              className="text-primary font-bold hover:underline cursor-pointer flex items-center gap-1"
             >
               <span className="material-symbols-outlined text-[15px]">contact_support</span>
               <span>Nous contacter</span>
             </button>
           </div>
 
-          <div className="text-outline">
-            Casablanca · Rabat · Marrakech · {new Date().getFullYear()}
+          <div className="text-ink-subtle font-display text-[11px]">
+            Casablanca · Rabat · Marrakech
           </div>
         </div>
       </footer>

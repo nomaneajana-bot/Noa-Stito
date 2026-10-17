@@ -7,309 +7,266 @@ interface InvitationsScreenProps {
 }
 
 export const InvitationsScreen: React.FC<InvitationsScreenProps> = ({ onNavigate }) => {
-  const [activeTab, setActiveTab] = useState<'pending' | 'vip'>('pending');
-  const [adminStatus, setAdminStatus] = useState<'idle' | 'accepted' | 'refused'>('idle');
-  const [cancelToast, setCancelToast] = useState(false);
+  const [modStatus, setModStatus] = useState<'idle' | 'approved' | 'refused'>('idle');
+  const [isCancelled, setIsCancelled] = useState(false);
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
+
+  const showToast = (msg: string) => {
+    setToastMessage(msg);
+    setTimeout(() => setToastMessage(null), 2500);
+  };
+
+  const handleApprove = () => {
+    setModStatus('approved');
+    showToast('Sarah a rejoint le collectif.');
+  };
+
+  const handleRefuse = () => {
+    setModStatus('refused');
+    showToast('Demande déclinée discrètement.');
+  };
+
+  const handleCancelRequest = () => {
+    if (window.confirm('Souhaites-tu vraiment retirer ta demande pour Les pas de Casa ?')) {
+      setIsCancelled(true);
+      showToast("Demande d'adhésion retirée.");
+    }
+  };
 
   return (
-    <div className="flex flex-col w-full pb-20 pt-16 md:pt-20 px-4 md:px-8 max-w-5xl mx-auto animate-in fade-in duration-200">
+    <div className="flex flex-col w-full pb-28 md:pb-16 pt-16 md:pt-20 px-4 md:px-8 max-w-4xl mx-auto animate-in fade-in duration-200">
       {/* Toast Alert */}
-      {cancelToast && (
-        <div className="fixed top-16 left-1/2 -translate-x-1/2 z-50 bg-on-surface text-surface px-4 py-2 rounded-full text-xs font-semibold shadow-xl border border-surface-container-high/20 animate-in fade-in duration-150">
-          Demande d'adhésion annulée.
+      {toastMessage && (
+        <div className="fixed top-16 left-4 right-4 sm:left-1/2 sm:-translate-x-1/2 z-50 pointer-events-none transition-all duration-300 flex items-center justify-between px-4 py-3 rounded-xl bg-brand text-white shadow-xl border border-sand-divider/40">
+          <div className="flex items-center gap-2">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+            <span className="font-display text-xs uppercase tracking-wider font-semibold">
+              {toastMessage}
+            </span>
+          </div>
         </div>
       )}
 
-      {/* Code Recognition Top Ribbon */}
-      <div className="bg-surface-container-low rounded-2xl p-4 flex items-center justify-between shadow-2xs border border-surface-container-high/50 mb-6">
-        <div className="flex items-center space-x-3 min-w-0">
-          <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
-            <span className="material-symbols-outlined text-primary text-[20px]">verified</span>
-          </div>
-          <div className="min-w-0">
-            <div className="font-label-sm text-xs uppercase text-outline font-bold">
-              Code d'invitation détecté
-            </div>
-            <div className="font-headline-md text-xl sm:text-2xl font-bold tracking-tight text-on-surface truncate">
-              CASA-PAS-2024
-            </div>
-          </div>
+      {/* Code Détecté Eyebrow & Live Verification Status */}
+      <div className="flex items-center justify-between py-2 mb-4 bg-sand-card p-3 rounded-xl border hairline-border shadow-[0_2px_8px_rgba(17,19,17,0.02)]">
+        <div className="flex items-center gap-2">
+          <span className="w-2 h-2 rounded-full bg-brand animate-pulse"></span>
+          <span className="font-display text-[10px] uppercase tracking-widest text-ink font-bold">
+            Invitation Privée
+          </span>
         </div>
-        <span className="bg-primary/15 text-primary font-label-sm text-xs px-3 py-1 rounded-full uppercase tracking-wider font-bold shrink-0">
-          Actif
+        <span className="font-display text-xs text-brand font-bold bg-brand/10 border border-brand/15 px-2.5 py-0.5 rounded-md">
+          CODE · CASA-PAS-2024
         </span>
       </div>
 
-      {/* Responsive 2-Column Grid */}
+      {/* 2-Column Responsive Layout on Desktop */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
-        {/* LEFT COLUMN: Club Card & Policy */}
-        <div className="space-y-4">
-          <div className="bg-surface-container-lowest rounded-2xl p-5 shadow-xs border border-surface-container-high/50 space-y-4">
-            <div className="flex items-start space-x-3.5">
-              <div className="w-18 h-18 rounded-2xl overflow-hidden shrink-0 bg-surface-container relative shadow-sm">
-                <img
-                  className="w-full h-full object-cover"
-                  alt="Athletic group walking"
-                  src={IMAGES.clubInviteSquare}
-                />
-              </div>
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center space-x-1 text-primary">
-                  <span className="material-symbols-outlined text-[16px]">groups</span>
-                  <span className="font-label-sm text-xs uppercase tracking-wide font-bold">
-                    Club communautaire
-                  </span>
-                </div>
-                <h2 className="font-headline-lg text-xl sm:text-2xl font-bold text-on-surface truncate mt-0.5">
+        {/* LEFT COLUMN: Club Storytelling & Statut */}
+        <div className="space-y-6">
+          {/* Club Identity & Visual Storytelling */}
+          <div className="relative w-full rounded-2xl overflow-hidden shadow-[0_2px_8px_rgba(17,19,17,0.02)] bg-sand-card border hairline-border">
+            <div
+              className="relative w-full h-56 sm:h-64 bg-cover bg-center"
+              style={{ backgroundImage: `url('${IMAGES.cornicheWalkersGoldenHour}')` }}
+            >
+              <div className="absolute inset-0 bg-gradient-to-t from-brand/90 via-brand/30 to-transparent"></div>
+              <div className="absolute bottom-3 left-4 right-4 text-white">
+                <span className="font-display text-[10px] uppercase tracking-widest text-white/80 block mb-1 font-bold">
+                  Collectif de marche active
+                </span>
+                <h1 className="font-display text-2xl sm:text-3xl font-bold tracking-tight text-white leading-tight">
                   Les pas de Casa
-                </h2>
-                <p className="font-body-sm text-xs text-on-surface-variant flex items-center mt-1 space-x-1">
-                  <span className="material-symbols-outlined text-[14px]">location_on</span>
-                  <span>Casablanca · 48 membres actifs</span>
+                </h1>
+              </div>
+            </div>
+
+            {/* Club Telemetry Strip */}
+            <div className="px-4 py-3 bg-[#FAF9F6] border-y hairline-border flex flex-wrap items-center gap-y-1 gap-x-2 text-ink-muted text-xs">
+              <div className="flex items-center gap-1 font-sans">
+                <span className="material-symbols-outlined text-[16px] text-brand">location_on</span>
+                <span className="font-semibold text-ink">Casablanca</span>
+              </div>
+              <span className="opacity-40">/</span>
+              <div className="flex items-center gap-1 font-sans">
+                <span className="material-symbols-outlined text-[16px] text-brand">groups</span>
+                <span className="font-medium">48 membres actifs</span>
+              </div>
+              <span className="opacity-40">/</span>
+              <span className="font-sans truncate">Fondé par Mehdi B.</span>
+            </div>
+
+            {/* Manifeste / Quote Section */}
+            <div className="p-4 bg-sand-card">
+              <p className="font-sans text-sm text-ink-muted italic leading-relaxed">
+                « Marche, découverte urbaine et conversation libre dans les parcs de Casablanca. Ouvert à toutes et tous pour respirer et bouger ensemble. »
+              </p>
+            </div>
+          </div>
+
+          {/* Section: Statut de la Demande */}
+          <div className="bg-sand-card p-5 rounded-2xl border hairline-border shadow-[0_2px_8px_rgba(17,19,17,0.02)] space-y-4">
+            <div className="flex items-center justify-between pb-2 border-b hairline-border">
+              <h2 className="font-display text-[10px] uppercase tracking-widest text-ink-muted font-bold">
+                Statut de la demande
+              </h2>
+              <span className="font-display text-xs text-brand font-bold">Étape 01/02</span>
+            </div>
+
+            <div className="flex items-start gap-3.5">
+              <div className="w-9 h-9 rounded-xl bg-brand/10 border border-brand/15 text-brand flex items-center justify-center shrink-0 mt-0.5">
+                <span className="material-symbols-outlined text-[20px]">hourglass_top</span>
+              </div>
+              <div className="flex flex-col min-w-0">
+                <h3 className="font-display text-base font-bold text-ink">
+                  {isCancelled ? "Demande retirée" : "En attente de validation"}
+                </h3>
+                <p className="font-sans text-xs text-ink-muted mt-1 leading-relaxed">
+                  {isCancelled
+                    ? "Tu as retiré ta demande d'adhésion pour ce club. Tu peux en formuler une nouvelle à tout moment."
+                    : "Ce club valide manuellement les nouvelles demandes pour préserver la convivialité du groupe. Mehdi prend généralement moins de 24h. Tu recevras une notification dès confirmation."}
                 </p>
               </div>
             </div>
 
-            <p className="font-body-md text-sm text-on-surface-variant leading-relaxed">
-              Marche, découverte urbaine et conversation libre dans les parcs de Casablanca. Ouvert à toutes et tous pour respirer et bouger ensemble.
-            </p>
-
-            {/* Host info tile */}
-            <div className="bg-surface-container-low rounded-xl p-3 flex items-center justify-between border border-surface-container-high/40">
-              <div className="flex items-center space-x-3 min-w-0">
-                <div className="w-10 h-10 rounded-full overflow-hidden shrink-0 bg-surface-container">
-                  <img
-                    className="w-full h-full object-cover"
-                    alt="Mehdi Benjelloun"
-                    src={IMAGES.mehdiClose}
-                  />
-                </div>
-                <div className="min-w-0">
-                  <div className="font-label-sm text-[10px] text-outline uppercase font-bold">
-                    Organisateur
-                  </div>
-                  <div className="font-label-lg text-sm font-bold text-on-surface truncate">
-                    Mehdi Benjelloun
-                  </div>
-                </div>
-              </div>
-              <div className="w-8 h-8 rounded-full bg-surface-container-lowest flex items-center justify-center text-primary shadow-2xs">
-                <span className="material-symbols-outlined text-[18px]">verified_user</span>
-              </div>
+            {/* Live Pipeline Tracker Indicator */}
+            <div className="w-full bg-sand-muted h-1.5 rounded-full overflow-hidden mt-1">
+              <div
+                className={`h-full rounded-full transition-all duration-500 ${
+                  isCancelled ? 'w-0 bg-ink-muted' : 'w-2/3 bg-brand'
+                }`}
+              ></div>
             </div>
-          </div>
 
-          {/* Policy Note */}
-          <div className="bg-surface-container-low rounded-2xl p-4 flex items-start space-x-3 border border-surface-container-high/40">
-            <span className="material-symbols-outlined text-primary text-[22px] mt-0.5 shrink-0">
-              shield
-            </span>
-            <p className="font-body-sm text-xs text-on-surface-variant leading-relaxed">
-              Ce club valide manuellement les nouvelles demandes pour préserver la convivialité, la parité et la sécurité bienveillante du groupe.
-            </p>
+            {/* Action: Explorer en attendant */}
+            <button
+              type="button"
+              onClick={() => onNavigate('accueil')}
+              className="w-full h-11 px-4 rounded-xl bg-[#FAF9F6] hover:bg-sand-muted border hairline-border transition-colors flex items-center justify-between text-ink cursor-pointer"
+            >
+              <span className="font-display text-xs font-bold uppercase tracking-wider">
+                Explorer les sorties publiques en attendant
+              </span>
+              <span className="material-symbols-outlined text-[18px] text-brand">arrow_forward</span>
+            </button>
           </div>
         </div>
 
-        {/* RIGHT COLUMN: Interactive State Switcher & Moderator Inset */}
-        <div className="space-y-4">
-          {/* Switcher Tabs */}
-          <div className="bg-surface-container rounded-full p-1 flex border border-surface-container-high/60">
-            <button
-              onClick={() => setActiveTab('pending')}
-              className={`flex-1 py-2 text-center rounded-full font-label-md text-xs transition-all duration-200 cursor-pointer ${
-                activeTab === 'pending'
-                  ? 'bg-surface-container-lowest text-on-surface font-bold shadow-xs'
-                  : 'text-outline font-semibold hover:text-on-surface'
-              }`}
-            >
-              Demande standard
-            </button>
-            <button
-              onClick={() => setActiveTab('vip')}
-              className={`flex-1 py-2 text-center rounded-full font-label-md text-xs transition-all duration-200 cursor-pointer ${
-                activeTab === 'vip'
-                  ? 'bg-surface-container-lowest text-on-surface font-bold shadow-xs'
-                  : 'text-outline font-semibold hover:text-on-surface'
-              }`}
-            >
-              Invitation directe VIP
-            </button>
-          </div>
-
-          {/* State 1: Pending Request */}
-          {activeTab === 'pending' && (
-            <div className="bg-surface-container-lowest rounded-2xl p-5 shadow-xs border border-surface-container-high/50 space-y-4 animate-in fade-in duration-200">
-              <div className="flex items-center space-x-3">
-                <div className="w-11 h-11 rounded-full bg-secondary-container/50 flex items-center justify-center text-on-secondary-container shrink-0">
-                  <span className="material-symbols-outlined text-[26px]">hourglass_top</span>
-                </div>
-                <div>
-                  <div className="font-label-sm text-xs uppercase tracking-wider text-primary font-bold">
-                    Demande envoyée
-                  </div>
-                  <h3 className="font-headline-md text-lg font-bold text-on-surface">
-                    En attente de validation
-                  </h3>
-                </div>
+        {/* RIGHT COLUMN: Admin Inset, Club Values & Cancellation */}
+        <div className="space-y-6">
+          {/* Section: Aperçu côté Organisateur (Admin Inset) */}
+          <div className="bg-sand-card p-5 rounded-2xl border hairline-border shadow-[0_2px_8px_rgba(17,19,17,0.02)] space-y-4">
+            <div className="flex items-center justify-between pb-2 border-b hairline-border">
+              <div className="flex items-center gap-1.5">
+                <span className="material-symbols-outlined text-brand text-[16px]">visibility</span>
+                <h2 className="font-display text-[10px] uppercase tracking-widest text-ink-muted font-bold">
+                  Aperçu côté organisateur
+                </h2>
               </div>
-
-              <div className="bg-surface-container-low rounded-xl p-4 space-y-2.5 border border-surface-container-high/40">
-                <div className="flex items-start space-x-2.5">
-                  <span className="material-symbols-outlined text-primary text-[18px] shrink-0 mt-0.5">
-                    mail
-                  </span>
-                  <p className="font-body-sm text-xs text-on-surface leading-relaxed">
-                    <strong>Mehdi</strong> recevra ta demande avec tes statistiques de marche récentes.
-                  </p>
-                </div>
-                <div className="flex items-start space-x-2.5">
-                  <span className="material-symbols-outlined text-primary text-[18px] shrink-0 mt-0.5">
-                    notifications_active
-                  </span>
-                  <p className="font-body-sm text-xs text-on-surface leading-relaxed">
-                    Tu recevras une notification dès qu'elle sera approuvée.
-                  </p>
-                </div>
-                <div className="flex items-start space-x-2.5">
-                  <span className="material-symbols-outlined text-outline text-[18px] shrink-0 mt-0.5">
-                    info
-                  </span>
-                  <p className="font-body-sm text-xs text-on-surface-variant leading-relaxed">
-                    Pas d'inscription automatique aux sorties fermées du club avant confirmation.
-                  </p>
-                </div>
-              </div>
-
-              <button
-                onClick={() => onNavigate('accueil')}
-                className="w-full h-12 bg-primary hover:bg-primary-container text-on-primary rounded-full font-label-lg text-xs uppercase tracking-wider font-bold flex items-center justify-center space-x-2 transition-all shadow-sm cursor-pointer"
-              >
-                <span>Explorer les sorties publiques</span>
-                <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
-              </button>
-            </div>
-          )}
-
-          {/* State 2: Direct VIP Bypass */}
-          {activeTab === 'vip' && (
-            <div className="bg-surface-container-lowest rounded-2xl p-5 shadow-xs border border-surface-container-high/50 space-y-4 animate-in fade-in duration-200">
-              <div className="flex items-center space-x-3">
-                <div className="w-11 h-11 rounded-full bg-secondary-fixed flex items-center justify-center text-on-secondary-fixed shrink-0">
-                  <span className="material-symbols-outlined text-[26px]">workspace_premium</span>
-                </div>
-                <div>
-                  <div className="font-label-sm text-xs uppercase tracking-wider text-secondary font-bold">
-                    Passe VIP activé
-                  </div>
-                  <h3 className="font-headline-md text-lg font-bold text-on-surface">
-                    Bienvenue dans le club !
-                  </h3>
-                </div>
-              </div>
-
-              <div className="bg-secondary-fixed/20 rounded-xl p-4 space-y-1 text-on-surface border border-secondary-fixed/30">
-                <div className="font-headline-md text-base font-bold text-secondary">
-                  Adhésion immédiate confirmée
-                </div>
-                <p className="font-body-sm text-xs text-on-surface-variant leading-relaxed">
-                  Ton code provient directement du référent club. Tu as désormais accès aux discussions et aux parcours privés de Casablanca.
-                </p>
-              </div>
-
-              <button
-                onClick={() => onNavigate('outing-detail')}
-                className="w-full h-12 bg-primary hover:bg-primary-container text-on-primary rounded-full font-label-lg text-xs uppercase tracking-wider font-bold flex items-center justify-center space-x-2 transition-all shadow-sm cursor-pointer"
-              >
-                <span className="material-symbols-outlined text-[20px]">directions_walk</span>
-                <span>Rejoindre la sortie de samedi</span>
-              </button>
-            </div>
-          )}
-
-          {/* Admin Moderation Inset */}
-          <div className="bg-surface-container-high rounded-2xl p-4 space-y-3 border border-surface-container-high/60">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-1.5 text-on-surface-variant">
-                <span className="material-symbols-outlined text-[18px]">admin_panel_settings</span>
-                <span className="font-label-md text-xs uppercase tracking-wider font-bold">
-                  Aperçu côté modérateur
-                </span>
-              </div>
-              <span className="font-label-sm text-[11px] text-outline font-semibold">
-                Gestion des demandes
+              <span className="font-display text-[10px] text-brand bg-brand/10 border border-brand/15 px-2 py-0.5 rounded font-bold uppercase">
+                Écran de Mehdi
               </span>
             </div>
 
-            <div className="bg-surface-container-lowest rounded-xl p-3.5 shadow-2xs border border-surface-container-high/40 space-y-3">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-2.5">
-                  <div className="w-10 h-10 rounded-full overflow-hidden bg-surface-container shrink-0">
-                    <img
-                      className="w-full h-full object-cover"
-                      alt="Sarah Mansouri"
-                      src={IMAGES.sarahAvatar}
-                    />
-                  </div>
-                  <div>
-                    <div className="font-label-lg text-xs font-bold text-on-surface">
-                      Sarah Mansouri
-                    </div>
-                    <div className="font-body-sm text-[11px] text-outline">
-                      Casablanca · 3 sorties GRPD
-                    </div>
-                  </div>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <img
+                  src={IMAGES.sarahMansouriPortrait}
+                  alt="Portrait de Sarah Mansouri"
+                  className="w-10 h-10 rounded-full object-cover border hairline-border ring-2 ring-white"
+                />
+                <div className="flex flex-col min-w-0">
+                  <span className="font-display text-sm font-bold text-ink leading-tight">
+                    Sarah Mansouri
+                  </span>
+                  <span className="font-sans text-xs text-ink-muted">
+                    Casablanca · 3 sorties GRPD
+                  </span>
                 </div>
-                <span className="font-label-sm text-[10px] text-outline font-semibold">Aujourd'hui</span>
               </div>
+              <span className="font-display text-[10px] text-ink-muted font-semibold">
+                Il y a 10 min
+              </span>
+            </div>
 
-              <div className="bg-surface-container-low p-2.5 rounded-lg border border-surface-container-high/30">
-                <p className="font-body-sm text-xs text-on-surface italic">
-                  “Bonjour ! J'habite près d'Anfa Park et j'aimerais vous rejoindre pour les marches du samedi.”
-                </p>
+            {/* Message du candidat */}
+            <div className="p-3.5 bg-[#FAF9F6] rounded-xl text-ink font-sans text-xs leading-relaxed border hairline-border italic">
+              « Bonjour ! J'habite près d'Anfa Park et j'aimerais vous rejoindre pour les marches du samedi matin. »
+            </div>
+
+            {/* Interactive Moderation Controls */}
+            {modStatus === 'idle' ? (
+              <div className="grid grid-cols-2 gap-2 pt-1">
+                <button
+                  type="button"
+                  onClick={handleRefuse}
+                  className="h-10 rounded-xl bg-[#FAF9F6] hover:bg-sand-muted border hairline-border text-ink-muted hover:text-red-600 transition-colors flex items-center justify-center font-display text-xs font-bold uppercase tracking-wider cursor-pointer"
+                >
+                  Refuser
+                </button>
+                <button
+                  type="button"
+                  onClick={handleApprove}
+                  className="h-10 rounded-xl bg-brand hover:bg-brand-dark text-white transition-all flex items-center justify-center gap-1.5 font-display text-xs font-bold uppercase tracking-wider cursor-pointer shadow-xs"
+                >
+                  <span className="material-symbols-outlined text-[16px]">check</span>
+                  <span>Approuver</span>
+                </button>
               </div>
+            ) : modStatus === 'approved' ? (
+              <div className="p-3 text-center rounded-xl bg-brand/10 border border-brand/20 text-brand font-display text-xs font-bold uppercase tracking-wider animate-in fade-in duration-200">
+                Sarah a rejoint le collectif avec succès !
+              </div>
+            ) : (
+              <div className="p-3 text-center rounded-xl bg-sand-muted border hairline-border text-ink-muted font-display text-xs font-semibold animate-in fade-in duration-200">
+                Demande déclinée discrètement.
+              </div>
+            )}
+          </div>
 
-              {adminStatus === 'idle' ? (
-                <div className="flex items-center space-x-2 pt-1">
-                  <button
-                    onClick={() => setAdminStatus('refused')}
-                    className="flex-1 h-9 rounded-full bg-surface-container-high text-on-surface font-label-md text-xs font-bold hover:bg-surface-container-highest transition-colors cursor-pointer"
-                  >
-                    Refuser
-                  </button>
-                  <button
-                    onClick={() => setAdminStatus('accepted')}
-                    className="flex-1 h-9 rounded-full bg-primary hover:bg-primary-container text-on-primary font-label-md text-xs font-bold transition-colors flex items-center justify-center space-x-1 shadow-2xs cursor-pointer"
-                  >
-                    <span className="material-symbols-outlined text-[16px]">check</span>
-                    <span>Approuver</span>
-                  </button>
-                </div>
-              ) : adminStatus === 'accepted' ? (
-                <div className="py-2 px-3 rounded-lg text-center font-label-md text-xs bg-secondary-fixed/30 text-primary font-bold flex items-center justify-center gap-1.5">
-                  <span className="material-symbols-outlined text-[18px]">verified</span>
-                  <span>✓ Adhésion de Sarah approuvée avec succès !</span>
-                </div>
-              ) : (
-                <div className="py-2 px-3 rounded-lg text-center font-label-md text-xs bg-surface-container-highest text-outline font-semibold">
-                  Demande archivée sans approbation.
-                </div>
-              )}
+          {/* Club Values & Protocol Details */}
+          <div className="bg-sand-card p-5 rounded-2xl border hairline-border shadow-[0_2px_8px_rgba(17,19,17,0.02)] space-y-3">
+            <span className="font-display text-[10px] uppercase tracking-widest text-ink-muted font-bold block pb-1 border-b hairline-border">
+              Engagement du groupe
+            </span>
+
+            <div className="flex items-start gap-2.5 py-1">
+              <span className="material-symbols-outlined text-brand text-[18px] shrink-0 mt-0.5">
+                verified
+              </span>
+              <p className="font-sans text-xs text-ink-muted leading-relaxed">
+                Rythme adapté (5 à 6 km/h), pauses incluses et bienveillance systématique envers les nouveaux arrivants.
+              </p>
+            </div>
+
+            <div className="flex items-start gap-2.5 py-1">
+              <span className="material-symbols-outlined text-brand text-[18px] shrink-0 mt-0.5">
+                forum
+              </span>
+              <p className="font-sans text-xs text-ink-muted leading-relaxed">
+                Accès direct au canal de discussion privé du club dès que ta participation est validée.
+              </p>
             </div>
           </div>
 
-          <div className="text-center pt-2">
-            <button
-              onClick={() => {
-                setCancelToast(true);
-                setTimeout(() => {
-                  setCancelToast(false);
-                  onNavigate('accueil');
-                }, 1600);
-              }}
-              className="font-label-md text-xs text-outline hover:text-error transition-colors py-1 cursor-pointer font-semibold"
-            >
-              Annuler la demande d'adhésion
-            </button>
+          {/* Cancellation Action */}
+          <div className="flex flex-col items-center justify-center pt-2">
+            {!isCancelled ? (
+              <button
+                type="button"
+                onClick={handleCancelRequest}
+                className="font-display text-xs text-ink-muted hover:text-red-600 transition-colors underline underline-offset-4 py-1 cursor-pointer font-bold uppercase tracking-wider"
+              >
+                Annuler ma demande d'adhésion
+              </button>
+            ) : (
+              <span className="font-display text-xs text-ink-muted uppercase font-bold tracking-wider">
+                Demande annulée
+              </span>
+            )}
+            <span className="font-sans text-[11px] text-ink-muted opacity-80 text-center mt-1">
+              Tu pourras redemander à tout moment avec un nouveau code.
+            </span>
           </div>
         </div>
       </div>

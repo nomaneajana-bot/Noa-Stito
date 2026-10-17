@@ -7,6 +7,8 @@ export type ScreenId =
   | 'invitations' 
   | 'create-club' 
   | 'profil'
+  | 'settings'
+  | 'onboarding'
   | 'contact';
 
 export interface ContactFormData {

@@ -93,7 +93,7 @@ export const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) =
       setTimeout(() => {
         setIsSubmitting(false);
         setIsSuccess(true);
-      }, 900);
+      }, 700);
     }
   };
 
@@ -113,23 +113,23 @@ export const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) =
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-4 overflow-y-auto animate-in fade-in duration-200">
-      <div className="bg-surface-container-lowest rounded-3xl shadow-2xl border border-surface-container-high w-full max-w-lg overflow-hidden my-8 animate-in zoom-in-95 duration-200">
+      <div className="bg-sand-card rounded-2xl shadow-2xl border hairline-border w-full max-w-lg overflow-hidden my-8 animate-in zoom-in-95 duration-200">
         {/* Modal Header */}
-        <div className="p-5 bg-surface-container-low border-b border-surface-container-high/60 flex items-center justify-between">
+        <div className="p-5 bg-[#FAF9F6] border-b hairline-border flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+            <div className="w-10 h-10 rounded-xl bg-brand/10 border border-brand/15 flex items-center justify-center text-brand">
               <span className="material-symbols-outlined text-[22px]">contact_support</span>
             </div>
             <div>
-              <h3 className="font-headline-md font-bold text-on-surface">Nous contacter</h3>
-              <p className="font-body-sm text-on-surface-variant text-xs">
-                Une question, une idée ou un partenariat avec GRPD Maroc ?
-              </p>
+              <span className="font-display text-[10px] uppercase tracking-[0.14em] text-ink-muted font-bold block">
+                Support & Contact
+              </span>
+              <h3 className="font-display text-lg font-bold text-ink">Échanger avec l'équipe GRPD</h3>
             </div>
           </div>
           <button
             onClick={handleResetAndClose}
-            className="w-8 h-8 rounded-full hover:bg-surface-container-high flex items-center justify-center text-on-surface-variant transition-colors cursor-pointer"
+            className="w-8 h-8 rounded-full hover:bg-sand-muted flex items-center justify-center text-ink-muted hover:text-ink transition-colors cursor-pointer"
             aria-label="Fermer"
           >
             <span className="material-symbols-outlined text-[20px]">close</span>
@@ -140,7 +140,7 @@ export const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) =
         <div className="p-6">
           {isSuccess ? (
             <div className="text-center py-6 space-y-4 animate-in fade-in duration-300">
-              <div className="w-16 h-16 rounded-full bg-secondary-container flex items-center justify-center mx-auto text-on-secondary-container">
+              <div className="w-16 h-16 rounded-full bg-brand/10 text-brand border border-brand/15 flex items-center justify-center mx-auto">
                 <span
                   className="material-symbols-outlined text-[36px]"
                   style={{ fontVariationSettings: "'FILL' 1" }}
@@ -149,31 +149,33 @@ export const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) =
                 </span>
               </div>
               <div>
-                <h4 className="font-headline-md font-bold text-on-surface">Message envoyé avec succès !</h4>
-                <p className="font-body-md text-on-surface-variant text-sm mt-1 max-w-sm mx-auto">
+                <h4 className="font-display text-xl font-bold text-ink">Message envoyé avec succès !</h4>
+                <p className="font-sans text-sm text-ink-muted mt-1 max-w-sm mx-auto">
                   Merci <strong>{formData.fullName}</strong>. Notre équipe d'animation à Casablanca vous répondra sous 24h à l'adresse <em>{formData.email}</em>.
                 </p>
               </div>
 
-              <div className="bg-surface-container-low rounded-xl p-3.5 text-left text-xs space-y-1 max-w-sm mx-auto border border-surface-container-high/40">
-                <span className="font-bold text-primary block">Objet : {formData.subject}</span>
-                <p className="text-on-surface-variant italic">"{formData.message}"</p>
+              <div className="bg-[#FAF9F6] rounded-xl p-3.5 text-left text-xs space-y-1 max-w-sm mx-auto border hairline-border">
+                <span className="font-display font-bold text-brand block uppercase tracking-wider text-[11px]">
+                  Objet : {formData.subject}
+                </span>
+                <p className="font-sans text-ink-muted italic">"{formData.message}"</p>
               </div>
 
               <button
                 onClick={handleResetAndClose}
-                className="px-6 py-2.5 rounded-full bg-primary hover:bg-primary-container text-on-primary font-label-md font-bold transition-all shadow-sm cursor-pointer"
+                className="px-6 py-2.5 rounded-xl bg-brand hover:bg-brand-dark text-white font-display text-xs font-bold uppercase tracking-wider transition-all shadow-xs cursor-pointer"
               >
                 Fermer la fenêtre
               </button>
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-4" noValidate>
-              {/* Nom & Email (Responsive 2 cols on tablet/desktop) */}
+              {/* Nom & Email */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="font-label-md text-xs font-bold text-on-surface block mb-1">
-                    Nom complet <span className="text-error">*</span>
+                  <label className="font-display text-xs font-bold uppercase tracking-wider text-ink block mb-1">
+                    Nom complet <span className="text-red-600">*</span>
                   </label>
                   <input
                     type="text"
@@ -182,24 +184,24 @@ export const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) =
                     onChange={handleChange}
                     onBlur={handleBlur}
                     placeholder="ex: Amina Tazi"
-                    className={`w-full h-11 px-3 rounded-xl bg-surface-container-low text-on-surface text-sm border focus:outline-none transition-colors ${
+                    className={`w-full h-11 px-3.5 rounded-xl bg-[#FAF9F6] text-ink font-sans text-sm border focus:outline-none transition-colors ${
                       errors.fullName
-                        ? 'border-error focus:ring-1 focus:ring-error'
+                        ? 'border-red-500 focus:ring-1 focus:ring-red-500'
                         : touched.fullName && formData.fullName
-                        ? 'border-primary/50'
-                        : 'border-surface-container-high/60 focus:border-primary'
+                        ? 'border-brand'
+                        : 'border-sand-divider focus:border-brand focus:ring-1 focus:ring-brand'
                     }`}
                   />
                   {errors.fullName && (
-                    <span className="text-[11px] text-error font-medium block mt-1">
+                    <span className="text-[11px] font-sans text-red-600 font-medium block mt-1">
                       {errors.fullName}
                     </span>
                   )}
                 </div>
 
                 <div>
-                  <label className="font-label-md text-xs font-bold text-on-surface block mb-1">
-                    Adresse email <span className="text-error">*</span>
+                  <label className="font-display text-xs font-bold uppercase tracking-wider text-ink block mb-1">
+                    Adresse email <span className="text-red-600">*</span>
                   </label>
                   <input
                     type="email"
@@ -208,59 +210,52 @@ export const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) =
                     onChange={handleChange}
                     onBlur={handleBlur}
                     placeholder="amina@exemple.ma"
-                    className={`w-full h-11 px-3 rounded-xl bg-surface-container-low text-on-surface text-sm border focus:outline-none transition-colors ${
+                    className={`w-full h-11 px-3.5 rounded-xl bg-[#FAF9F6] text-ink font-sans text-sm border focus:outline-none transition-colors ${
                       errors.email
-                        ? 'border-error focus:ring-1 focus:ring-error'
+                        ? 'border-red-500 focus:ring-1 focus:ring-red-500'
                         : touched.email && formData.email
-                        ? 'border-primary/50'
-                        : 'border-surface-container-high/60 focus:border-primary'
+                        ? 'border-brand'
+                        : 'border-sand-divider focus:border-brand focus:ring-1 focus:ring-brand'
                     }`}
                   />
                   {errors.email && (
-                    <span className="text-[11px] text-error font-medium block mt-1">
+                    <span className="text-[11px] font-sans text-red-600 font-medium block mt-1">
                       {errors.email}
                     </span>
                   )}
                 </div>
               </div>
 
-              {/* Téléphone & Sujet */}
+              {/* Téléphone & Objet */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="font-label-md text-xs font-bold text-on-surface block mb-1">
-                    Téléphone <span className="text-outline font-normal">(Facultatif)</span>
+                  <label className="font-display text-xs font-bold uppercase tracking-wider text-ink block mb-1">
+                    Téléphone (optionnel)
                   </label>
                   <input
                     type="tel"
                     name="phone"
                     value={formData.phone}
                     onChange={handleChange}
-                    placeholder="+212 6 00 00 00 00"
-                    className="w-full h-11 px-3 rounded-xl bg-surface-container-low text-on-surface text-sm border border-surface-container-high/60 focus:outline-none focus:border-primary"
+                    placeholder="+212 6 XX XX XX XX"
+                    className="w-full h-11 px-3.5 rounded-xl bg-[#FAF9F6] text-ink font-sans text-sm border hairline-border focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand"
                   />
                 </div>
 
                 <div>
-                  <label className="font-label-md text-xs font-bold text-on-surface block mb-1">
-                    Sujet de votre message
+                  <label className="font-display text-xs font-bold uppercase tracking-wider text-ink block mb-1">
+                    Objet de la demande
                   </label>
                   <select
                     name="subject"
                     value={formData.subject}
                     onChange={handleChange}
-                    className="w-full h-11 px-3 rounded-xl bg-surface-container-low text-on-surface text-sm border border-surface-container-high/60 focus:outline-none focus:border-primary"
+                    className="w-full h-11 px-3.5 rounded-xl bg-[#FAF9F6] text-ink font-sans text-sm border hairline-border focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand"
                   >
                     <option value="Renseignement général">Renseignement général</option>
-                    <option value="Proposer un nouveau club partenaire">
-                      Proposer un club partenaire
-                    </option>
-                    <option value="Devenir référent / guide local">
-                      Devenir référent / guide local
-                    </option>
-                    <option value="Signaler un problème sur une sortie">
-                      Signaler un problème
-                    </option>
-                    <option value="Autre demande">Autre demande</option>
+                    <option value="Création d'un club partenaire">Création d'un club partenaire</option>
+                    <option value="Rejoindre en tant que guide référent">Rejoindre en tant que guide référent</option>
+                    <option value="Signalement technique / Bug">Signalement technique / Bug</option>
                   </select>
                 </div>
               </div>
@@ -268,59 +263,51 @@ export const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) =
               {/* Message */}
               <div>
                 <div className="flex items-center justify-between mb-1">
-                  <label className="font-label-md text-xs font-bold text-on-surface">
-                    Message <span className="text-error">*</span>
+                  <label className="font-display text-xs font-bold uppercase tracking-wider text-ink">
+                    Message <span className="text-red-600">*</span>
                   </label>
-                  <span className="text-[11px] text-outline">
-                    {formData.message.length}/500 caractères
+                  <span className="text-[11px] font-sans text-ink-muted">
+                    {formData.message.length} / 15 car. min
                   </span>
                 </div>
                 <textarea
                   name="message"
                   rows={4}
-                  maxLength={500}
                   value={formData.message}
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  placeholder="Écrivez votre message ici (questions sur les parcours à Anfa ou Corniche, propositions, suggestions)..."
-                  className={`w-full p-3 rounded-xl bg-surface-container-low text-on-surface text-sm border resize-none focus:outline-none transition-colors ${
+                  placeholder="Expliquez-nous votre besoin, votre ville ou vos envies de marche collective..."
+                  className={`w-full p-3.5 rounded-xl bg-[#FAF9F6] text-ink font-sans text-sm border focus:outline-none transition-colors resize-none ${
                     errors.message
-                      ? 'border-error focus:ring-1 focus:ring-error'
-                      : touched.message && formData.message.length >= 15
-                      ? 'border-primary/50'
-                      : 'border-surface-container-high/60 focus:border-primary'
+                      ? 'border-red-500 focus:ring-1 focus:ring-red-500'
+                      : touched.message && formData.message
+                      ? 'border-brand'
+                      : 'border-sand-divider focus:border-brand focus:ring-1 focus:ring-brand'
                   }`}
                 />
                 {errors.message && (
-                  <span className="text-[11px] text-error font-medium block mt-1">
+                  <span className="text-[11px] font-sans text-red-600 font-medium block mt-1">
                     {errors.message}
                   </span>
                 )}
               </div>
 
               {/* Submit CTA */}
-              <div className="pt-2 flex items-center justify-end gap-3">
-                <button
-                  type="button"
-                  onClick={handleResetAndClose}
-                  className="px-4 py-2.5 rounded-full text-on-surface-variant hover:text-on-surface text-xs font-semibold cursor-pointer"
-                >
-                  Annuler
-                </button>
+              <div className="pt-2">
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="px-6 py-2.5 rounded-full bg-primary hover:bg-primary-container active:scale-[0.98] text-on-primary font-label-md font-bold text-xs flex items-center gap-2 shadow-sm transition-all cursor-pointer"
+                  className="w-full h-12 rounded-xl bg-brand hover:bg-brand-dark text-white font-display text-xs uppercase tracking-[0.14em] font-bold flex items-center justify-center gap-2 shadow-sm transition-all cursor-pointer"
                 >
                   {isSubmitting ? (
                     <>
-                      <span className="material-symbols-outlined text-[16px] animate-spin">sync</span>
+                      <span className="material-symbols-outlined text-[18px] animate-spin">sync</span>
                       <span>Envoi en cours...</span>
                     </>
                   ) : (
                     <>
-                      <span className="material-symbols-outlined text-[16px]">send</span>
-                      <span>Envoyer le message</span>
+                      <span className="material-symbols-outlined text-[18px]">send</span>
+                      <span>Envoyer mon message</span>
                     </>
                   )}
                 </button>
